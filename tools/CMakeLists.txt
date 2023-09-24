@@ -1,0 +1,10 @@
+add_library(tools
+    PrintX.cc
+    )
+
+target_include_directories( tools PUBLIC
+    "${PROJECT_SOURCE_DIR}/tools"
+    )
+
+# add the unit test directory
+add_subdirectory(unit_test)
