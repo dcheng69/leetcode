@@ -24,3 +24,30 @@ target_link_libraries(DebugPrintX PUBLIC
 target_include_directories(DebugPrintX PUBLIC
     "${PROJECT_SOURCE_DIR}/tools"
     )
+
+# add test for TreeNode
+add_executable(TestTreeNode TestTreeNode.cc)
+
+target_link_libraries(TestTreeNode PUBLIC
+    GTest::gtest_main
+    gmock_main
+    tools
+    )
+
+target_include_directories(TestTreeNode PUBLIC
+    "${PROJECT_SOURCE_DIR}/tools"
+    )
+
+include(GoogleTest)
+gtest_discover_tests(TestTreeNode)
+
+# add debug for TreeNode
+add_executable(DebugTreeNode DebugTreeNode.cc)
+
+target_link_libraries(DebugTreeNode PUBLIC
+    tools
+    )
+
+target_include_directories(DebugTreeNode PUBLIC
+    "${PROJECT_SOURCE_DIR}/tools"
+    )
