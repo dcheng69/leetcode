@@ -1,5 +1,6 @@
 add_library(tools
     PrintX.cc
+    TreeNode.cc
     )
 
 target_include_directories( tools PUBLIC
