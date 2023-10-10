@@ -2,7 +2,7 @@
 #include <gmock/gmock.h>
 #include "TreeNode.h"
 using namespace std;
-using testing::UnorderedElementsAreArray;
+using testing::ElementsAreArray;
 
 TEST(TestTreeNode, TestConstructVector) {
     // test nullptr input
@@ -11,37 +11,37 @@ TEST(TestTreeNode, TestConstructVector) {
 
     // construct a one node TreeNode
     p_root = new TreeNode(0);
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0"}));
 
     // construct a two node TreeNode with left child
     TreeNode* p_left_child = new TreeNode(1);
     p_root->left = p_left_child;
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0", "1"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1"}));
 
     // construct a two node TreeNode with right child
     TreeNode* p_right_child = new TreeNode(2);
     p_root->left = nullptr; // remove the left child
     p_root->right = p_right_child;
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0", "2"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "2"}));
 
     // construct a tree with 3 node TreeNode
     p_root->left = p_left_child;
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0", "1", "2"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2"}));
 
     // construct a tree with 4 node
     TreeNode* p_left_left_child= new TreeNode(3);
     p_left_child->left = p_left_left_child;
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0", "1", "2", "3"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "3"}));
 
     // construct a tree with 4 node
     p_left_child->left = nullptr;
     TreeNode* p_left_right_child= new TreeNode(4);
     p_left_child->right = p_left_right_child;
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0", "1", "2", "4"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "4"}));
 
     // construct a tree with 5 node
     p_left_child->left = p_left_left_child;
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0", "1", "2", "3", "4"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "3", "4"}));
 
     // cleanning up, take care of mem leak!
     free(p_left_right_child);
@@ -68,35 +68,35 @@ TEST(TestTreeNode, TestConstructTreeNode) {
     s_vec.clear();  // content cleared, capacity remains
     s_vec.assign({"0"});
     p_root = ConstructTreeNode(s_vec, "null");
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0"}));
 
     // construct two node Tree with left child
     p_root = nullptr;
     s_vec.clear();  // content cleared, capacity remains
     s_vec.assign({"0", "1"});
     p_root = ConstructTreeNode(s_vec, "null");
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0", "1"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1"}));
 
     // construct two node Tree with right child
     p_root = nullptr;
     s_vec.clear();  // content cleared, capacity remains
     s_vec.assign({"0", "null", "1"});
     p_root = ConstructTreeNode(s_vec, "null");
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0", "1"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1"}));
 
     // construct three node Tree with left and right child
     p_root = nullptr;
     s_vec.clear();  // content cleared, capacity remains
     s_vec.assign({"0", "1", "2"});
     p_root = ConstructTreeNode(s_vec, "null");
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0", "1", "2"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2"}));
 
     // construct four node Tree with last layer has only left child
     p_root = nullptr;
     s_vec.clear();  // content cleared, capacity remains
     s_vec.assign({"0", "1", "2", "3", "null", "null", "null"});
     p_root = ConstructTreeNode(s_vec, "null");
-    ASSERT_THAT(ConstructVector(p_root), UnorderedElementsAreArray({"0", "1", "2", "3"}));
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "3"}));
 }
 
 TEST(TestTreeNode, TestSmartTreeNode) {
