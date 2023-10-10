@@ -21,3 +21,4 @@ enable_testing()
 
 add_subdirectory(tools)
 add_subdirectory(1_two_sum)
+add_subdirectory(144_Binary_Tree_Preorder_Traversal)
