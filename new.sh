@@ -60,7 +60,7 @@ funWithParam(){
     echo "target_link_libraries(Test$1 PUBLIC">>CMakeLists.txt
     echo "    GTest::gtest_main">>CMakeLists.txt
     echo "    gmock_main">>CMakeLists.txt
-    echo "    1_solution">>CMakeLists.txt
+    echo "    $1_solution">>CMakeLists.txt
     echo "    tools">>CMakeLists.txt
     echo "    )">>CMakeLists.txt
     echo "">>CMakeLists.txt
