@@ -111,3 +111,93 @@ TEST(TestTreeNode, TestSmartTreeNode) {
     SmartTreeNode::FreeTree(p_root_need_free);
     p_root_need_free = nullptr;
 }
+
+TEST(TestTreeNode, TestMaxTreeDepth) {
+    // test nullptr input
+    TreeNode* p_root = nullptr;
+    ASSERT_THAT(MaxTreeDepth(p_root), 0);
+
+    // construct a one node TreeNode
+    p_root = new TreeNode(0);
+    ASSERT_THAT(MaxTreeDepth(p_root), 1);
+    SmartTreeNode* st = new SmartTreeNode(p_root);
+
+    // construct a two node TreeNode with left child
+    TreeNode* p_left_child = new TreeNode(1);
+    p_root->left = p_left_child;
+    ASSERT_THAT(MaxTreeDepth(p_root), 2);
+
+    // construct a two node TreeNode with right child
+    TreeNode* p_right_child = new TreeNode(2);
+    p_root->left = nullptr; // remove the left child
+    p_root->right = p_right_child;
+    ASSERT_THAT(MaxTreeDepth(p_root), 2);
+
+    // construct a tree with 3 node TreeNode
+    p_root->left = p_left_child;
+    ASSERT_THAT(MaxTreeDepth(p_root), 2);
+
+    // construct a tree with 4 node
+    TreeNode* p_left_left_child= new TreeNode(3);
+    p_left_child->left = p_left_left_child;
+    ASSERT_THAT(MaxTreeDepth(p_root), 3);
+
+    // construct a tree with 4 node
+    p_left_child->left = nullptr;
+    TreeNode* p_left_right_child= new TreeNode(4);
+    p_left_child->right = p_left_right_child;
+    ASSERT_THAT(MaxTreeDepth(p_root), 3);
+
+    // construct a tree with 5 node
+    p_left_child->left = p_left_left_child;
+    ASSERT_THAT(MaxTreeDepth(p_root), 3);
+
+    delete st;
+    p_root = nullptr;
+}
+
+
+TEST(TestTreeNode, TestMaxTreeValue) {
+    // test nullptr input
+    TreeNode* p_root = nullptr;
+    ASSERT_THAT(MaxTreeValue(p_root), 0);
+
+    // construct a one node TreeNode
+    p_root = new TreeNode(0);
+    ASSERT_THAT(MaxTreeValue(p_root), 0);
+    SmartTreeNode* st = new SmartTreeNode(p_root);
+
+    // construct a two node TreeNode with left child
+    TreeNode* p_left_child = new TreeNode(1);
+    p_root->left = p_left_child;
+    ASSERT_THAT(MaxTreeValue(p_root), 1);
+
+    // construct a two node TreeNode with right child
+    TreeNode* p_right_child = new TreeNode(2);
+    p_root->left = nullptr; // remove the left child
+    p_root->right = p_right_child;
+    ASSERT_THAT(MaxTreeValue(p_root), 2);
+
+    // construct a tree with 3 node TreeNode
+    p_root->left = p_left_child;
+    ASSERT_THAT(MaxTreeValue(p_root), 2);
+
+    // construct a tree with 4 node
+    TreeNode* p_left_left_child= new TreeNode(3);
+    p_left_child->left = p_left_left_child;
+    ASSERT_THAT(MaxTreeValue(p_root), 3);
+
+    // construct a tree with 4 node
+    p_left_child->left = nullptr;
+    TreeNode* p_left_right_child= new TreeNode(4);
+    p_left_child->right = p_left_right_child;
+    ASSERT_THAT(MaxTreeValue(p_root), 4);
+
+    // construct a tree with 5 node
+    p_left_child->left = p_left_left_child;
+    ASSERT_THAT(MaxTreeValue(p_root), 4);
+
+    // cleanning up, take care of mem leak!
+    delete st;
+    p_root = nullptr;
+}

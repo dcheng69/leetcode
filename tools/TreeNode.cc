@@ -82,3 +82,62 @@ int SmartTreeNode::FreeTree(TreeNode* p_tree_node) {
 
     return ret;
 }
+
+int MaxTreeDepth(TreeNode *root) {
+    if (root == nullptr) {
+        return 0;
+    }
+
+    // find the max depth non recursively
+    int max_depth = 0;
+    queue<TreeNode*> node_queue;
+    node_queue.push(root);
+
+    while (!node_queue.empty()) {
+        int level_size = node_queue.size();
+        for (int i=0; i<level_size; ++i) {
+            TreeNode* curr_root = node_queue.front();
+            node_queue.pop();
+
+            if (curr_root->left != nullptr) {
+                node_queue.push(curr_root->left);
+            }
+
+            if(curr_root->right != nullptr) {
+                node_queue.push(curr_root->right);
+            }
+        }
+        max_depth++;
+    }
+    return max_depth;
+}
+
+int MaxTreeValue(TreeNode *root) {
+    if (root == nullptr) {
+        return 0;
+    }
+
+    // find the max depth non recursively
+    int max_value= root->val;
+    queue<TreeNode*> node_queue;
+    node_queue.push(root);
+
+    while (!node_queue.empty()) {
+        int level_size = node_queue.size();
+        for (int i=0; i<level_size; ++i) {
+            TreeNode* curr_root = node_queue.front();
+            node_queue.pop();
+
+            if (curr_root->left != nullptr) {
+                max_value = max_value>curr_root->left->val ? max_value : curr_root->left->val;
+                node_queue.push(curr_root->left);
+            }
+
+            if(curr_root->right != nullptr) {
+                max_value = max_value>curr_root->right->val ? max_value : curr_root->right->val;
+                node_queue.push(curr_root->right);
+            }
+        }
+    }
+    return max_value;
+}
