@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "TreeNode.h"
+#include "PrintX.h"
 using namespace std;
 using testing::ElementsAreArray;
 
@@ -11,37 +12,44 @@ TEST(TestTreeNode, TestConstructVector) {
 
     // construct a one node TreeNode
     p_root = new TreeNode(0);
+    PrintTree(p_root); cout << endl;
     ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0"}));
 
     // construct a two node TreeNode with left child
     TreeNode* p_left_child = new TreeNode(1);
     p_root->left = p_left_child;
-    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1"}));
+    PrintTree(p_root); cout << endl;
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "null"}));
 
     // construct a two node TreeNode with right child
     TreeNode* p_right_child = new TreeNode(2);
     p_root->left = nullptr; // remove the left child
     p_root->right = p_right_child;
-    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "2"}));
+    PrintTree(p_root); cout << endl;
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "null", "2"}));
 
     // construct a tree with 3 node TreeNode
     p_root->left = p_left_child;
+    PrintTree(p_root); cout << endl;
     ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2"}));
 
     // construct a tree with 4 node
     TreeNode* p_left_left_child= new TreeNode(3);
     p_left_child->left = p_left_left_child;
-    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "3"}));
+    PrintTree(p_root); cout << endl;
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "3", "null", "null", "null"}));
 
     // construct a tree with 4 node
     p_left_child->left = nullptr;
     TreeNode* p_left_right_child= new TreeNode(4);
     p_left_child->right = p_left_right_child;
-    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "4"}));
+    PrintTree(p_root); cout << endl;
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "null", "4", "null", "null"}));
 
     // construct a tree with 5 node
     p_left_child->left = p_left_left_child;
-    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "3", "4"}));
+    PrintTree(p_root); cout << endl;
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "3", "4", "null", "null"}));
 
     // cleanning up, take care of mem leak!
     free(p_left_right_child);
@@ -66,29 +74,33 @@ TEST(TestTreeNode, TestConstructTreeNode) {
     // construct Tree with one node
     p_root = nullptr;
     s_vec.clear();  // content cleared, capacity remains
-    s_vec.assign({"0"});
+    s_vec.assign({"0", "null", "null"});
     p_root = ConstructTreeNode(s_vec, "null");
+    PrintTree(p_root); cout << endl;
     ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0"}));
 
     // construct two node Tree with left child
     p_root = nullptr;
     s_vec.clear();  // content cleared, capacity remains
-    s_vec.assign({"0", "1"});
+    s_vec.assign({"0", "1", "null"});
     p_root = ConstructTreeNode(s_vec, "null");
-    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1"}));
+    PrintTree(p_root); cout << endl;
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "null"}));
 
     // construct two node Tree with right child
     p_root = nullptr;
     s_vec.clear();  // content cleared, capacity remains
     s_vec.assign({"0", "null", "1"});
     p_root = ConstructTreeNode(s_vec, "null");
-    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1"}));
+    PrintTree(p_root); cout << endl;
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0","null", "1"}));
 
     // construct three node Tree with left and right child
     p_root = nullptr;
     s_vec.clear();  // content cleared, capacity remains
     s_vec.assign({"0", "1", "2"});
     p_root = ConstructTreeNode(s_vec, "null");
+    PrintTree(p_root); cout << endl;
     ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2"}));
 
     // construct four node Tree with last layer has only left child
@@ -96,7 +108,8 @@ TEST(TestTreeNode, TestConstructTreeNode) {
     s_vec.clear();  // content cleared, capacity remains
     s_vec.assign({"0", "1", "2", "3", "null", "null", "null"});
     p_root = ConstructTreeNode(s_vec, "null");
-    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "3"}));
+    PrintTree(p_root); cout << endl;
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "3", "null", "null", "null"}));
 }
 
 TEST(TestTreeNode, TestSmartTreeNode) {

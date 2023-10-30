@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <climits>
 #include "TreeNode.h"
 #include "ErrorNo.h"
 using namespace std;
@@ -39,20 +40,41 @@ vector<string> ConstructVector(TreeNode* p_root) {
     vector<string> s_vec;
     if (p_root == nullptr)
         return s_vec;
+    s_vec.push_back(to_string(p_root->val));
 
     queue<TreeNode*> tree_que;
     tree_que.push(p_root);
-    while (!tree_que.empty()) {
-        TreeNode* p_tree_node = tree_que.front();
-        tree_que.pop();
-        // process the node it self
-        s_vec.push_back(to_string(p_tree_node->val));
-        // push all its child to queue
-        if (p_tree_node->left != nullptr) {
-            tree_que.push(p_tree_node->left);
-        }
-        if (p_tree_node->right != nullptr) {
-            tree_que.push(p_tree_node->right);
+
+    int max_depth = MaxTreeDepth(p_root);
+    // layer traverse
+    for (int i=0; i<max_depth-1; ++i) {
+        int level_size = tree_que.size();
+        for (int j=0; j<level_size; ++j) {
+            TreeNode* p_tree_node = tree_que.front();
+            tree_que.pop();
+            if (p_tree_node == nullptr) {
+                // left and right are nullptr
+                tree_que.push(nullptr);
+                tree_que.push(nullptr);
+                s_vec.push_back("null");
+                s_vec.push_back("null");
+                continue;
+            }
+            // push all its child to queue
+            if (p_tree_node->left != nullptr) {
+                tree_que.push(p_tree_node->left);
+                s_vec.push_back(to_string(p_tree_node->left->val));
+            } else {
+                tree_que.push(nullptr);
+                s_vec.push_back("null");
+            }
+            if (p_tree_node->right != nullptr) {
+                tree_que.push(p_tree_node->right);
+                s_vec.push_back(to_string(p_tree_node->right->val));
+            } else {
+                tree_que.push(nullptr);
+                s_vec.push_back("null");
+            }
         }
     }
 
