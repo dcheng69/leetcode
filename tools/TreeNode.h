@@ -45,6 +45,24 @@ struct TreeNode* ConstructTreeNode(const std::vector<std::string>& s_vec, const 
  */
 std::vector<std::string> ConstructVector(TreeNode* p_root);
 
+/**
+ * @brief return the max depth of the tree using BSF
+ *
+ * @param node
+ *
+ * @return max depth in int
+ */
+int MaxTreeDepth(TreeNode *root);
+
+/**
+ * @brief return the max value int he tree
+ *
+ * @param root
+ *
+ * @return max value of the tree, return 0 for nullptr
+ */
+int MaxTreeValue(TreeNode *root);
+
 
 /**
  * @brief Smart pointer to hold the pointer

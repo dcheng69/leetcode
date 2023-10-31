@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include "TreeNode.h"
 
 template<typename T>
 std::string PrintToString(const std::string name, const T& vec) {
@@ -21,5 +22,13 @@ template<typename T>
 void Print(const std::string name, const T& vec) {
     std::cout << PrintToString(name, vec);
 }
+
+
+/**
+ * @brief print tree node with appropriate inditetion recursively
+ *
+ * @param node pointer to the tree root
+ */
+void PrintTree(TreeNode* p_node);
 
 #endif

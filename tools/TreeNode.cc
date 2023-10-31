@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <climits>
 #include "TreeNode.h"
 #include "ErrorNo.h"
 using namespace std;
@@ -10,6 +11,9 @@ struct TreeNode* ConstructTreeNode(const vector<string>& s_vec, const string nul
 
     if (s_vec.size() == 0)
         return nullptr;
+    else if(s_vec[0] == null_denotation)
+        return nullptr;
+
     // calculate tree structure from index
     // left child --> (2n+1)
     // right child --> (2n+2)
@@ -17,17 +21,25 @@ struct TreeNode* ConstructTreeNode(const vector<string>& s_vec, const string nul
     tree_vec.push_back(p_root);
     for(int i=0; i<s_vec.size(); ++i) {
         TreeNode* p_temp = tree_vec[i];
+        if(p_temp == nullptr)
+            continue;
         int left_index = 2*i+1, right_index = 2*i+2;
-        if(left_index < s_vec.size() && s_vec[left_index] != null_denotation && p_temp != nullptr) {
+        if(left_index < s_vec.size() && s_vec[left_index] != null_denotation) {
             TreeNode* p_left = new TreeNode(stoi(s_vec[left_index]));
             p_temp ->left = p_left;
             tree_vec.push_back(p_left);
+        } else {
+            p_temp->left = nullptr;
+            tree_vec.push_back(nullptr);
         }
 
-        if (right_index < s_vec.size() && s_vec[right_index] != null_denotation && p_temp != nullptr) {
+        if (right_index < s_vec.size() && s_vec[right_index] != null_denotation) {
             TreeNode* p_right = new TreeNode(stoi(s_vec[right_index]));
             p_temp ->right = p_right;
             tree_vec.push_back(p_right);
+        } else {
+            p_temp->right= nullptr;
+            tree_vec.push_back(nullptr);
         }
     }
 
@@ -39,20 +51,41 @@ vector<string> ConstructVector(TreeNode* p_root) {
     vector<string> s_vec;
     if (p_root == nullptr)
         return s_vec;
+    s_vec.push_back(to_string(p_root->val));
 
     queue<TreeNode*> tree_que;
     tree_que.push(p_root);
-    while (!tree_que.empty()) {
-        TreeNode* p_tree_node = tree_que.front();
-        tree_que.pop();
-        // process the node it self
-        s_vec.push_back(to_string(p_tree_node->val));
-        // push all its child to queue
-        if (p_tree_node->left != nullptr) {
-            tree_que.push(p_tree_node->left);
-        }
-        if (p_tree_node->right != nullptr) {
-            tree_que.push(p_tree_node->right);
+
+    int max_depth = MaxTreeDepth(p_root);
+    // layer traverse
+    for (int i=0; i<max_depth-1; ++i) {
+        int level_size = tree_que.size();
+        for (int j=0; j<level_size; ++j) {
+            TreeNode* p_tree_node = tree_que.front();
+            tree_que.pop();
+            if (p_tree_node == nullptr) {
+                // left and right are nullptr
+                tree_que.push(nullptr);
+                tree_que.push(nullptr);
+                s_vec.push_back("null");
+                s_vec.push_back("null");
+                continue;
+            }
+            // push all its child to queue
+            if (p_tree_node->left != nullptr) {
+                tree_que.push(p_tree_node->left);
+                s_vec.push_back(to_string(p_tree_node->left->val));
+            } else {
+                tree_que.push(nullptr);
+                s_vec.push_back("null");
+            }
+            if (p_tree_node->right != nullptr) {
+                tree_que.push(p_tree_node->right);
+                s_vec.push_back(to_string(p_tree_node->right->val));
+            } else {
+                tree_que.push(nullptr);
+                s_vec.push_back("null");
+            }
         }
     }
 
@@ -81,4 +114,63 @@ int SmartTreeNode::FreeTree(TreeNode* p_tree_node) {
     }
 
     return ret;
+}
+
+int MaxTreeDepth(TreeNode *root) {
+    if (root == nullptr) {
+        return 0;
+    }
+
+    // find the max depth non recursively
+    int max_depth = 0;
+    queue<TreeNode*> node_queue;
+    node_queue.push(root);
+
+    while (!node_queue.empty()) {
+        int level_size = node_queue.size();
+        for (int i=0; i<level_size; ++i) {
+            TreeNode* curr_root = node_queue.front();
+            node_queue.pop();
+
+            if (curr_root->left != nullptr) {
+                node_queue.push(curr_root->left);
+            }
+
+            if(curr_root->right != nullptr) {
+                node_queue.push(curr_root->right);
+            }
+        }
+        max_depth++;
+    }
+    return max_depth;
+}
+
+int MaxTreeValue(TreeNode *root) {
+    if (root == nullptr) {
+        return 0;
+    }
+
+    // find the max depth non recursively
+    int max_value= root->val;
+    queue<TreeNode*> node_queue;
+    node_queue.push(root);
+
+    while (!node_queue.empty()) {
+        int level_size = node_queue.size();
+        for (int i=0; i<level_size; ++i) {
+            TreeNode* curr_root = node_queue.front();
+            node_queue.pop();
+
+            if (curr_root->left != nullptr) {
+                max_value = max_value>curr_root->left->val ? max_value : curr_root->left->val;
+                node_queue.push(curr_root->left);
+            }
+
+            if(curr_root->right != nullptr) {
+                max_value = max_value>curr_root->right->val ? max_value : curr_root->right->val;
+                node_queue.push(curr_root->right);
+            }
+        }
+    }
+    return max_value;
 }
