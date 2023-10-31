@@ -103,6 +103,14 @@ TEST(TestTreeNode, TestConstructTreeNode) {
     PrintTree(p_root); cout << endl;
     ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2"}));
 
+    // construct three node Tree with left and right child
+    p_root = nullptr;
+    s_vec.clear();  // content cleared, capacity remains
+    s_vec.assign({"0", "null", "1", "null", "null", "2"});
+    p_root = ConstructTreeNode(s_vec, "null");
+    PrintTree(p_root); cout << endl;
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "null", "1", "null", "null", "2", "null"}));
+
     // construct four node Tree with last layer has only left child
     p_root = nullptr;
     s_vec.clear();  // content cleared, capacity remains

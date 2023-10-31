@@ -11,6 +11,9 @@ struct TreeNode* ConstructTreeNode(const vector<string>& s_vec, const string nul
 
     if (s_vec.size() == 0)
         return nullptr;
+    else if(s_vec[0] == null_denotation)
+        return nullptr;
+
     // calculate tree structure from index
     // left child --> (2n+1)
     // right child --> (2n+2)
@@ -18,17 +21,25 @@ struct TreeNode* ConstructTreeNode(const vector<string>& s_vec, const string nul
     tree_vec.push_back(p_root);
     for(int i=0; i<s_vec.size(); ++i) {
         TreeNode* p_temp = tree_vec[i];
+        if(p_temp == nullptr)
+            continue;
         int left_index = 2*i+1, right_index = 2*i+2;
-        if(left_index < s_vec.size() && s_vec[left_index] != null_denotation && p_temp != nullptr) {
+        if(left_index < s_vec.size() && s_vec[left_index] != null_denotation) {
             TreeNode* p_left = new TreeNode(stoi(s_vec[left_index]));
             p_temp ->left = p_left;
             tree_vec.push_back(p_left);
+        } else {
+            p_temp->left = nullptr;
+            tree_vec.push_back(nullptr);
         }
 
-        if (right_index < s_vec.size() && s_vec[right_index] != null_denotation && p_temp != nullptr) {
+        if (right_index < s_vec.size() && s_vec[right_index] != null_denotation) {
             TreeNode* p_right = new TreeNode(stoi(s_vec[right_index]));
             p_temp ->right = p_right;
             tree_vec.push_back(p_right);
+        } else {
+            p_temp->right= nullptr;
+            tree_vec.push_back(nullptr);
         }
     }
 
