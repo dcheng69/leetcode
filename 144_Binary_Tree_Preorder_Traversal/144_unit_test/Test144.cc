@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "Solution144.h"
+#include "PrintX.h"
 using namespace std;
 using testing::ElementsAreArray;
 
@@ -59,6 +60,7 @@ TEST(Test144, CheckThreeNode) {
         s_vec.clear();
         s_vec.assign({"0", "1", "2"});
         SmartTreeNode st{ConstructTreeNode(s_vec, "null")};
+        PrintTree(st.GetRootNodePointer());
         EXPECT_THAT(s.preorderTraversal(st.GetRootNodePointer()), ElementsAreArray({0, 1, 2}));
         st.~SmartTreeNode();
     }
@@ -66,13 +68,15 @@ TEST(Test144, CheckThreeNode) {
         s_vec.clear();
         s_vec.assign({"0", "1", "null", "2"});
         SmartTreeNode st{ConstructTreeNode(s_vec, "null")};
+        PrintTree(st.GetRootNodePointer());
         EXPECT_THAT(s.preorderTraversal(st.GetRootNodePointer()), ElementsAreArray({0, 1, 2}));
         st.~SmartTreeNode();
     }
     {
         s_vec.clear();
-        s_vec.assign({"0", "null", "1", "2"});
+        s_vec.assign({"0", "null", "1", "null", "null", "null", "2"});
         SmartTreeNode st{ConstructTreeNode(s_vec, "null")};
+        PrintTree(st.GetRootNodePointer());
         EXPECT_THAT(s.preorderTraversal(st.GetRootNodePointer()), ElementsAreArray({0, 1, 2}));
         st.~SmartTreeNode();
     }
