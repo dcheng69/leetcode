@@ -2,7 +2,7 @@
 #include <stack>
 #include "Solution145.h"
 using namespace std;
-#define SOLUTION3
+#define SOLUTION4
 
 #ifdef SOLUTION1
 vector<int> Solution::postorderTraversal(TreeNode* root) {
@@ -89,6 +89,35 @@ vector<int> Solution::postorderTraversal(TreeNode* root) {
             i_vec.push_back(root->val);
             prev = root;
             root = nullptr;
+        }
+    }
+    return i_vec;
+}
+#endif
+#ifdef SOLUTION4
+vector<int> Solution::postorderTraversal(TreeNode* root) {
+    vector<int> i_vec;
+    if (root == nullptr)
+        return i_vec;
+
+    stack<TreeNode*> stk;
+    stk.push(root);
+    TreeNode* prev = nullptr;
+    while(!stk.empty()){
+        TreeNode* curr_root = stk.top();
+
+        if ((!curr_root->left && !curr_root->right) || (prev && (prev == curr_root->left || prev == curr_root->right))) {
+            i_vec.push_back(curr_root->val);
+            stk.pop();
+            prev = curr_root;
+        } else {
+            if (curr_root->right) {
+                stk.push(curr_root->right);
+            }
+
+            if (curr_root->left) {
+                stk.push(curr_root->left);
+            }
         }
     }
     return i_vec;
