@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.14)
 project(leetcode)
 
+# ccls condifuration
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # add Debug symbols
 set(CMAKE_BUILD_TYPE Debug)
 
