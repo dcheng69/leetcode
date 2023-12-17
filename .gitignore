@@ -1,0 +1,7 @@
+build
+.ccls-cache
+.ccls
+.ccls-root
+compile_commands.json
+windows
+ubuntu
