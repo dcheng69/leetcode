@@ -6,7 +6,6 @@
 using namespace std;
 
 struct TreeNode* ConstructTreeNode(const vector<string>& s_vec, const string null_denotation="null") {
-    TreeNode* p_root;
     vector<TreeNode*> tree_vec;
 
     if (s_vec.size() == 0)
@@ -17,33 +16,38 @@ struct TreeNode* ConstructTreeNode(const vector<string>& s_vec, const string nul
     // calculate tree structure from index
     // left child --> (2n+1)
     // right child --> (2n+2)
-    p_root = new TreeNode(stoi(s_vec[0]));
-    tree_vec.push_back(p_root);
-    for(int i=0; i<s_vec.size(); ++i) {
-        TreeNode* p_temp = tree_vec[i];
-        if(p_temp == nullptr)
-            continue;
-        int left_index = 2*i+1, right_index = 2*i+2;
-        if(left_index < s_vec.size() && s_vec[left_index] != null_denotation) {
-            TreeNode* p_left = new TreeNode(stoi(s_vec[left_index]));
-            p_temp ->left = p_left;
-            tree_vec.push_back(p_left);
+    // Construct the tree_vec
+    for(int i=0; i<s_vec.size(); i++) {
+        TreeNode* p_tree_node = nullptr;
+        if (s_vec[i] == null_denotation) {
+            p_tree_node = nullptr;
         } else {
-            p_temp->left = nullptr;
-            tree_vec.push_back(nullptr);
+            p_tree_node = new TreeNode(stoi(s_vec[i]));
+        }
+        tree_vec.push_back(p_tree_node);
+    }
+
+    for(int i=0; i<tree_vec.size(); i++) {
+        if (tree_vec[i] == nullptr) {
+            continue;
+        }
+        TreeNode* p_root = tree_vec[i];
+        int left_index = 2*i+1, right_index = 2*i+2;
+
+        if (left_index < tree_vec.size()) {
+            p_root->left = tree_vec[left_index];
+        } else {
+            p_root->left = nullptr;
         }
 
-        if (right_index < s_vec.size() && s_vec[right_index] != null_denotation) {
-            TreeNode* p_right = new TreeNode(stoi(s_vec[right_index]));
-            p_temp ->right = p_right;
-            tree_vec.push_back(p_right);
+        if (right_index < tree_vec.size()) {
+            p_root->right = tree_vec[right_index];
         } else {
-            p_temp->right= nullptr;
-            tree_vec.push_back(nullptr);
+            p_root->right = nullptr;
         }
     }
 
-    return p_root;
+    return tree_vec[0];
 }
 
 vector<string> ConstructVector(TreeNode* p_root) {
