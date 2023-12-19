@@ -111,6 +111,16 @@ TEST(TestTreeNode, TestConstructTreeNode) {
     PrintTree(p_root); cout << endl;
     ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "null", "1", "null", "null", "2", "null"}));
 
+}
+
+
+TEST(TestTreeNode, TestConstructFourNode) {
+    TreeNode* p_root = nullptr;
+    vector<string> s_vec;
+    // test null input
+    p_root = ConstructTreeNode(s_vec, "null");
+    ASSERT_EQ(p_root, nullptr);
+
     // construct four node Tree with last layer has only left child
     p_root = nullptr;
     s_vec.clear();  // content cleared, capacity remains
@@ -118,6 +128,16 @@ TEST(TestTreeNode, TestConstructTreeNode) {
     p_root = ConstructTreeNode(s_vec, "null");
     PrintTree(p_root); cout << endl;
     ASSERT_THAT(ConstructVector(p_root), ElementsAreArray({"0", "1", "2", "3", "null", "null", "null"}));
+
+
+    // construct four node Tree with last layer has only left child
+    p_root = nullptr;
+    s_vec.clear();  // content cleared, capacity remains
+    s_vec.assign({"0", "4", "1", "null", "null", "2", "null", "null", "null", "null", "null", "null", "3"});
+    p_root = ConstructTreeNode(s_vec, "null");
+    PrintTree(p_root); cout << endl;
+    ASSERT_THAT(ConstructVector(p_root), ElementsAreArray( { "0", "4", "1", "null", "null", "2", "null", "null", "null", "null", "null",
+ "null", "3", "null", "null" }));
 }
 
 TEST(TestTreeNode, TestSmartTreeNode) {
