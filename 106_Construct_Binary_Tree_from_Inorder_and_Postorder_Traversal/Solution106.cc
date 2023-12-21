@@ -1,7 +1,10 @@
 #include <iostream>
+#include <stack>
 #include "Solution106.h"
 using namespace std;
+#define SOLUTION_2
 
+#ifdef SOLUTION_1
 TreeNode* subBuildTree(vector<int>& inorder, int in_s, int in_e, \
         vector<int>& postorder, int po_s, int po_e) {
     if (in_s > in_e && po_s > po_e)
@@ -53,3 +56,43 @@ TreeNode* Solution::buildTree(vector<int>& inorder, vector<int>& postorder) {
     return subBuildTree(inorder, 0, inorder.size() - 1, \
             postorder, 0, postorder.size() - 1 );
 }
+#endif
+
+#ifdef SOLUTION_2
+TreeNode* Solution::buildTree(vector<int>& inorder, vector<int>& postorder) {
+    if (inorder.empty() || postorder.empty()) {
+        return nullptr;
+    }
+
+    int in_size = inorder.size();
+    int po_size = postorder.size();
+
+    TreeNode* root = new TreeNode(postorder[po_size - 1]);
+    stack<TreeNode*> nodes;
+    nodes.push(root);
+
+    int inIndex = in_size - 1;
+    int poIndex = po_size - 2;
+
+    while (poIndex >= 0) {
+        TreeNode* curr = nullptr;
+        while (!nodes.empty() && nodes.top()->val == inorder[inIndex]) {
+            curr = nodes.top();
+            nodes.pop();
+            inIndex--;
+        }
+
+        TreeNode* newNode = new TreeNode(postorder[poIndex]);
+        if (curr) {
+            curr->left = newNode;
+        } else {
+            nodes.top()->right = newNode;
+        }
+
+        nodes.push(newNode);
+        poIndex--;
+    }
+
+    return root;
+}
+#endif
