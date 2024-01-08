@@ -1,8 +1,9 @@
 #include <iostream>
 #include <stack>
+#include <utility>
 #include "Solution112.h"
 using namespace std;
-#define SOLUTION_2
+#define SOLUTION_3
 
 #ifdef SOLUTION_1
 bool Solution::hasPathSum(TreeNode* root, int targetSum) {
@@ -70,7 +71,6 @@ bool Solution::hasPathSum(TreeNode* root, int targetSum) {
         root = t_stk.top();
         if (last_visited && last_visited == root->right) {
             last_visited = root;
-            cout << "last_visited 1:" << last_visited->val << endl;
             sum-=t_stk.top()->val;
             t_stk.pop();
             continue;
@@ -93,9 +93,40 @@ bool Solution::hasPathSum(TreeNode* root, int targetSum) {
             break;
         }
         last_visited = root;
-        cout << "last_visited 2:" << last_visited->val << endl;
         sum-=t_stk.top()->val;
         t_stk.pop();
+    }
+
+    return ret;
+}
+#endif
+
+#ifdef SOLUTION_3
+bool Solution::hasPathSum(TreeNode* root, int targetSum) {
+    bool ret = false;
+    if (!root)
+        return ret;
+
+    stack<pair<TreeNode*, int>> p_stk;
+    p_stk.push(make_pair(root, root->val));
+    while (!p_stk.empty()) {
+        pair<TreeNode*, int> curr_p = p_stk.top();
+        p_stk.pop();
+        TreeNode* curr_node = curr_p.first;
+        int curr_sum = curr_p.second;
+
+        if (!curr_node->left && !curr_node->right && curr_sum == targetSum) {
+            ret = true;
+            break;
+        }
+
+        if (curr_node->left) {
+            p_stk.push(make_pair(curr_node->left, curr_sum+curr_node->left->val));
+        }
+
+        if (curr_node->right) {
+            p_stk.push(make_pair(curr_node->right, curr_sum+curr_node->right->val));
+        }
     }
 
     return ret;
