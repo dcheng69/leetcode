@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include "TreeNode.h"
+#include "ListNode.h"
 
 template<typename T>
 std::string PrintToString(const std::string name, const T& vec) {
@@ -31,4 +32,10 @@ void Print(const std::string name, const T& vec) {
  */
 void PrintTree(TreeNode* p_node);
 
+/**
+ * @brief print list node with appropriate inditetion recursively
+ *
+ * @param node pointer to the list head
+ */
+void PrintList(ListNode* p_node);
 #endif

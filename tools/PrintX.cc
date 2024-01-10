@@ -87,3 +87,10 @@ void PrintTree(TreeNode* p_node) {
         curr_depth++;
     }
 }
+
+void PrintList(ListNode* p_node) {
+    while (p_node) {
+        cout << p_node->val << " ";
+        p_node = p_node->next;
+    }
+}
