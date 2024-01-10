@@ -36,16 +36,16 @@ std::vector<int> GetVectorFromListNode(ListNode* p_node);
  */
 class SmartListNode {
     public:
-        SmartListNode() : p_root(nullptr) {}
-        SmartListNode(ListNode* p_list_node) : p_root(p_list_node) {}
+        SmartListNode() : p_node(nullptr) {}
+        SmartListNode(ListNode* p_list_node) : p_node(p_list_node) {}
         ~SmartListNode() {
-            FreeList(p_root);
-            this->p_root = nullptr;
+            FreeList(p_node);
+            this->p_node = nullptr;
         };
-        ListNode* GetRootNodePointer() {return p_root;}
-        ListNode* RebindRootPointer(ListNode* new_p_list_node) {
-            ListNode* old_p_list_node = p_root;
-            this->p_root = new_p_list_node;
+        ListNode* GetHeadNodePointer() {return p_node;}
+        ListNode* RebindHeadPointer(ListNode* new_p_list_node) {
+            ListNode* old_p_list_node = p_node;
+            this->p_node = new_p_list_node;
             return old_p_list_node;
         };
         static int FreeList(ListNode* p_list_node) {
@@ -60,6 +60,6 @@ class SmartListNode {
             return 0;
         };
     private:
-        ListNode* p_root;
+        ListNode* p_node;
 };
 #endif
