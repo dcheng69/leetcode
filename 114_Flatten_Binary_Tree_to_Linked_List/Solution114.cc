@@ -26,4 +26,5 @@ void Solution::flatten(TreeNode* root) {
         if (root->left)
             t_stk.push(root->left);
     }
+    return;
 }
