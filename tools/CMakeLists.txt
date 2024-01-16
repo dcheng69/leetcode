@@ -2,6 +2,7 @@ add_library(tools
     PrintX.cc
     TreeNode.cc
     ListNode.cc
+    Node.cc
     )
 
 target_include_directories( tools PUBLIC

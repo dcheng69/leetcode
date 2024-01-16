@@ -51,6 +51,19 @@ target_include_directories(TestListNode PUBLIC
     "${PROJECT_SOURCE_DIR}/tools"
     )
 
+# add test for Node
+add_executable(TestNode TestNode.cc)
+
+target_link_libraries(TestNode PUBLIC
+    GTest::gtest_main
+    gmock_main
+    tools
+    )
+
+target_include_directories(TestNode PUBLIC
+    "${PROJECT_SOURCE_DIR}/tools"
+    )
+
 include(GoogleTest)
 gtest_discover_tests(TestTreeNode)
 
