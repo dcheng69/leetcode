@@ -1,7 +1,9 @@
 #include <stack>
 #include <iostream>
+#include <algorithm>
 #include <string>
 #include "Solution449.h"
+#include "TreeNode.h"
 using namespace std;
 
 // Encodes a tree to a single string.
@@ -24,8 +26,7 @@ std::string Solution::serialize(TreeNode* root) {
         t_stk.pop();
         str += to_string(root->val);
         str += ",";
-        root = root->right;
-    }
+        root = root->right; }
 
     // seperator $, replace the last comma
     str.pop_back();
@@ -111,4 +112,45 @@ std::vector<int> Solution::postorderTraversal(TreeNode* root) {
         i_stk.pop();
     }
     return i_vec;
+}
+
+vector<int> subVectorUsingIterators(const vector<int>& originalVector, int startIndex, int length) {
+    vector<int> subVec;
+    // Check if the startIndex is within bounds
+    if (startIndex >= 0 && startIndex < originalVector.size() && length > 0) {
+        // Resize the subVec to accommodate 'length' elements
+        subVec.resize(length);
+        // Copy elements from originalVector to subVec using iterators
+        copy(originalVector.begin() + startIndex, originalVector.begin() + startIndex + length, subVec.begin());
+    }
+    return subVec;
+}
+
+// Using iterators to get Index for a given value in vector
+int findVecIndex(const vector<int>& vec, int value) {
+    auto it = find(vec.begin(), vec.end(), value); // Find the iterator pointing to the value
+    if (it != vec.end()) {
+        return distance(vec.begin(), it); // Calculate the index using distance
+    }
+    return -1; // Return -1 if value is not found
+}
+
+TreeNode* Solution::buildTree(vector<int>& inorder, vector<int>& postorder) {
+    TreeNode* p_root = nullptr;
+    if (postorder.size() == 0 && inorder.size() == 0)
+        return p_root;
+
+    p_root = new TreeNode(postorder[postorder.size() - 1]);
+    int inorder_root_index = findVecIndex(inorder, p_root->val);
+    int left_tree_length = inorder_root_index;
+    int right_tree_length = inorder.size() - left_tree_length - 1;
+    vector<int> inorder_left_vec = subVectorUsingIterators(inorder, 0, left_tree_length);
+    vector<int> inorder_right_vec = subVectorUsingIterators(inorder, inorder_root_index + 1, right_tree_length);
+    vector<int> post_left_vec = subVectorUsingIterators(postorder, 0, left_tree_length);
+    vector<int> post_right_vec = subVectorUsingIterators(postorder, left_tree_length, right_tree_length);
+
+    p_root->left = buildTree(inorder_left_vec, post_left_vec);
+    p_root->right = buildTree(inorder_right_vec, post_right_vec);
+
+    return p_root;
 }

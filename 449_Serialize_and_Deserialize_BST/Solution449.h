@@ -15,6 +15,7 @@ class Solution {
         // Code for Test
         std::vector<int> inorderTraversal(TreeNode* root);
         std::vector<int> postorderTraversal(TreeNode* root);
+        TreeNode* buildTree(std::vector<int>& inorder, std::vector<int>& postorder);
 };
 
 #endif
