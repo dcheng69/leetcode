@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
     s_vec.clear();
     s_vec = {"0", "1"};
     TreeNode* p_comapre_root = ConstructTreeNode(s_vec, "null");
-    TreeNode* p_ret_root = s.buildTree(inorder, postorder);
+    TreeNode* p_ret_root = s.deserialize(s.serialize(p_comapre_root));
     Print("p_ret_root", ConstructVector(p_ret_root));
     Print("p_cmp_root", ConstructVector(p_comapre_root));
     return 0;

@@ -1,3 +1,4 @@
+#include <sstream>
 #include <stack>
 #include <iostream>
 #include <algorithm>
@@ -63,8 +64,35 @@ std::string Solution::serialize(TreeNode* root) {
 }
 
 // Decodes your encoded data to tree.
-//TreeNode* deserialize(std::string data);
+TreeNode* Solution::deserialize(std::string data) {
+    TreeNode* p_root = nullptr;
+    if (data.size() == 0)
+        return p_root;
 
+    auto pos = find(data.begin(), data.end(), '$');
+    if (pos == data.end()) {
+        cerr << "invalid inputs!" << endl;
+        return p_root;
+    }
+
+    string inorder_str(data.begin(), pos);
+    string postorder_str(pos+1, data.end());
+    string num_str;
+
+    vector<int> inorder;
+    stringstream inorder_ss(inorder_str);
+    while (getline(inorder_ss, num_str, ',')) {
+        inorder.push_back(stoi(num_str));
+    }
+
+    vector<int> postorder;
+    stringstream postorder_ss(postorder_str);
+    while (getline(postorder_ss, num_str, ',')) {
+        postorder.push_back(stoi(num_str));
+    }
+
+    return buildTree(inorder, postorder);
+}
 
 std::vector<int> Solution::inorderTraversal(TreeNode* root) {
     vector<int> i_vec;
