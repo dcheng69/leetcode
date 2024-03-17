@@ -1,6 +1,9 @@
+find_package(Threads REQUIRED)
+
 add_library(449_solution Solution449.cc)
 
 target_link_libraries(449_solution PUBLIC
+        Threads::Threads
         tools
         )
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
+#include <thread>
 #include "Solution449.h"
 #include "TreeNode.h"
 using namespace std;
@@ -13,52 +14,62 @@ std::string Solution::serialize(TreeNode* root) {
     if (!root)
         return str;
 
-    TreeNode* temp_root = root;
-
-    stack<TreeNode*> t_stk;
+    string str_in;
     // inorderTraversal save to string
-    while (root || !t_stk.empty()) {
-        while (root) {
-            t_stk.push(root);
-            root = root->left;
-        }
+    thread inorder_thread([&]() {
+            TreeNode* in_root = root;
+            stack<TreeNode*> t_stk_in;
+            while (in_root || !t_stk_in.empty()) {
+            while (in_root) {
+            t_stk_in.push(in_root);
+            in_root = in_root->left;
+            }
 
-        root = t_stk.top();
-        t_stk.pop();
-        str += to_string(root->val);
-        str += ",";
-        root = root->right; }
+            in_root = t_stk_in.top();
+            t_stk_in.pop();
+            str_in += to_string(in_root->val);
+            str_in += ",";
+            in_root = in_root->right; }
 
-    // seperator $, replace the last comma
-    str.pop_back();
-    str += "$";
+            // remove the comma at the end
+            str_in.pop_back();
+            });
 
-    // restore the root value
-    root = temp_root;
-    stack<int> i_stk;
+    string str_po;
     // postorderTraversal save to string
-    t_stk.push(root);
-    while (!t_stk.empty()) {
-        root = t_stk.top();
-        t_stk.pop();
-        i_stk.push(root->val);
+    thread postorder_thread([&]() {
+            TreeNode* po_root = root;
+            stack<int> i_stk;
+            stack<TreeNode*> t_stk_po;
+            t_stk_po.push(po_root);
+            while (!t_stk_po.empty()) {
+            po_root = t_stk_po.top();
+            t_stk_po.pop();
+            i_stk.push(po_root->val);
 
-        if (root->left) {
-            t_stk.push(root->left);
-        }
-        if (root->right) {
-            t_stk.push(root->right);
-        }
-    }
+            if (po_root->left) {
+            t_stk_po.push(po_root->left);
+            }
+            if (po_root->right) {
+            t_stk_po.push(po_root->right);
+            }
+            }
+            while (!i_stk.empty()) {
+            str_po += to_string(i_stk.top());
+            str_po += ",";
+            i_stk.pop();
+            }
 
-    while (!i_stk.empty()) {
-        str += to_string(i_stk.top());
-        str += ",";
-        i_stk.pop();
-    }
+            // remove the comma at the end
+            str_po.pop_back();
+            });
 
-    // remove the comma at the end
-    str.pop_back();
+    // wait for both threads to finish
+    inorder_thread.join();
+    postorder_thread.join();
+
+    // combine the str together
+    str = str_in + "$" + str_po;
 
     return str;
 }
@@ -77,19 +88,28 @@ TreeNode* Solution::deserialize(std::string data) {
 
     string inorder_str(data.begin(), pos);
     string postorder_str(pos+1, data.end());
-    string num_str;
-
     vector<int> inorder;
-    stringstream inorder_ss(inorder_str);
-    while (getline(inorder_ss, num_str, ',')) {
-        inorder.push_back(stoi(num_str));
-    }
-
     vector<int> postorder;
-    stringstream postorder_ss(postorder_str);
-    while (getline(postorder_ss, num_str, ',')) {
-        postorder.push_back(stoi(num_str));
-    }
+
+    thread inorder_thread([&]() {
+            string num_str;
+            stringstream inorder_ss(inorder_str);
+            while (getline(inorder_ss, num_str, ',')) {
+            inorder.push_back(stoi(num_str));
+            }
+            });
+
+    thread postorder_thread([&]() {
+            string num_str;
+            stringstream postorder_ss(postorder_str);
+            while (getline(postorder_ss, num_str, ',')) {
+            postorder.push_back(stoi(num_str));
+            }
+            });
+
+    // wait for both threads to finish
+    inorder_thread.join();
+    postorder_thread.join();
 
     return buildTree(inorder, postorder);
 }
