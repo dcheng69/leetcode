@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.14)
 project(leetcode)
 
+# ccache support
+find_program(CCACHE_FOUND ccache)
+if(CCACHE_FOUND)
+  message(STATUS "Found ccache: ${CCACHE_FOUND}")
+  set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+  set(CMAKE_C_COMPILER_LAUNCHER ccache)
+else()
+  message(STATUS "ccache not found, proceeding without it.")
+endif()
+
 # ccls condifuration
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # add Debug symbols
